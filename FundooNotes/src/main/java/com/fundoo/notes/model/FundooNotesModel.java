@@ -1,9 +1,12 @@
 package com.fundoo.notes.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fundoo.notes.dto.FundooNoteDTO;
 
 import lombok.Data;
@@ -38,6 +41,13 @@ public @Data class FundooNotesModel {
 	@Column(name = "reminder")
 	private LocalDateTime reminderTime;
 	
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "notes_labels",
+				joinColumns = @JoinColumn(name = "note_id"),
+				inverseJoinColumns = @JoinColumn(name = "label_id"))
+	private List<FundooLabelModel> labelList = new ArrayList<FundooLabelModel>();
+	
 	public void changeNote(FundooNoteDTO fundooNoteDTO) {
 
 		this.title = fundooNoteDTO.title;
@@ -48,6 +58,15 @@ public @Data class FundooNotesModel {
 		this.changedDate = LocalDateTime.now();
 		
 	}
+	
+	@ManyToMany(mappedBy = "notes")
+	private List<FundooNoteCollaborator> collaborators = new ArrayList<FundooNoteCollaborator>();
+	
+	public FundooNotesModel(long id) {
+		this.id = id;
+	}
+	
+	public FundooNotesModel() {}
 
 
 

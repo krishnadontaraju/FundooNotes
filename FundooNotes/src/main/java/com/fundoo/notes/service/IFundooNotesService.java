@@ -24,4 +24,10 @@ public interface IFundooNotesService {
 
 	ResponseDTO viewAllTrashedNotes();
 
+	ResponseDTO addCollaborator(String emailId, long noteId) throws FundooNotesException;
+
+	ResponseDTO removeCollaborator(String emailId, long noteId) throws FundooNotesException;
+
+	ResponseDTO viewAllCollaborators(long noteId);
+
 }

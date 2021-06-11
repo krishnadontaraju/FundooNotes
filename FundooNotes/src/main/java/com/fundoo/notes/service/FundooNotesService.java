@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.fundoo.notes.dto.FundooNoteDTO;
 import com.fundoo.notes.exception.FundooNotesException;
+import com.fundoo.notes.model.FundooNoteCollaborator;
 import com.fundoo.notes.model.FundooNotesModel;
+import com.fundoo.notes.repository.FundooCollabRepository;
 import com.fundoo.notes.repository.FundooNotesRepository;
 import com.fundoo.notes.response.ResponseDTO;
 import com.fundoo.notes.util.TokenUtility;
@@ -28,6 +30,9 @@ public class FundooNotesService implements IFundooNotesService{
 	
 	@Autowired
 	private TokenUtility tokenManager;
+	
+	@Autowired
+	private FundooCollabRepository fundooCollabRepository;
 	
 	
 	//To Create or Add note 
@@ -53,14 +58,14 @@ public class FundooNotesService implements IFundooNotesService{
 	public ResponseDTO changeNote(long noteId, FundooNoteDTO fundooNoteDTO) throws FundooNotesException {
 		log.info("Requested to change the note ");
 		
-		Optional<FundooNotesModel> probableNote = fundooNotesRespository.findById(noteId);
+		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
-		if (probableNote.isPresent()) {
-			probableNote.get().changeNote(fundooNoteDTO);
+		if (isNotePresent.isPresent()) {
+			isNotePresent.get().changeNote(fundooNoteDTO);
 			
-			fundooNotesRespository.save(probableNote.get());
+			fundooNotesRespository.save(isNotePresent.get());
 			
-			ResponseDTO changeNoteResponse = new ResponseDTO("Successfully changed the note " , probableNote.get());
+			ResponseDTO changeNoteResponse = new ResponseDTO("Successfully changed the note " , isNotePresent.get());
 			
 			return changeNoteResponse;
 		}else {
@@ -72,15 +77,15 @@ public class FundooNotesService implements IFundooNotesService{
 	public ResponseDTO moveNoteToTrash(long noteId) throws FundooNotesException {
 		log.info("Requested to trash the note ");
 		
-		Optional<FundooNotesModel> probableNote = fundooNotesRespository.findById(noteId);
+		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
-		if (probableNote.isPresent()) {
+		if (isNotePresent.isPresent()) {
 			
-			probableNote.get().setTrashed(true);
+			isNotePresent.get().setTrashed(true);
 			
-			fundooNotesRespository.save(probableNote.get());
+			fundooNotesRespository.save(isNotePresent.get());
 
-			ResponseDTO trashNoteResponse = new ResponseDTO("Successfully trashed the note " , probableNote.get().getDescription());
+			ResponseDTO trashNoteResponse = new ResponseDTO("Successfully trashed the note " , isNotePresent.get().getDescription());
 			
 			return trashNoteResponse;
 		}else {
@@ -92,13 +97,13 @@ public class FundooNotesService implements IFundooNotesService{
 	public ResponseDTO archiveNote(long noteId) throws FundooNotesException {
 		log.info("Requested to archive the note ");
 		
-		Optional<FundooNotesModel> probableNote = fundooNotesRespository.findById(noteId);
+		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
-		if (probableNote.isPresent()) {
+		if (isNotePresent.isPresent()) {
 			
-			probableNote.get().setArchived(true);
+			isNotePresent.get().setArchived(true);
 			
-			fundooNotesRespository.save(probableNote.get());
+			fundooNotesRespository.save(isNotePresent.get());
 			
 			ResponseDTO qrchiveNoteResponse = new ResponseDTO("Successfully archived the note " , probableNote.get().getDescription());
 			
@@ -112,15 +117,15 @@ public class FundooNotesService implements IFundooNotesService{
 	public ResponseDTO pinNote(long noteId) throws FundooNotesException {
 		log.info("Requested to pin the note ");
 		
-		Optional<FundooNotesModel> probableNote = fundooNotesRespository.findById(noteId);
+		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
-		if (probableNote.isPresent()) {
+		if (isNotePresent.isPresent()) {
 			
-			probableNote.get().setPinned(true);
+			isNotePresent.get().setPinned(true);
 			
-			fundooNotesRespository.save(probableNote.get());
+			fundooNotesRespository.save(isNotePresent.get());
 			
-			ResponseDTO pinNoteResponse = new ResponseDTO("Successfully pinned the note " , probableNote.get().getDescription());
+			ResponseDTO pinNoteResponse = new ResponseDTO("Successfully pinned the note " , isNotePresent.get().getDescription());
 			
 			return pinNoteResponse;
 		}else {
@@ -159,6 +164,83 @@ public class FundooNotesService implements IFundooNotesService{
 		ResponseDTO allTrashedNotesResponse = new ResponseDTO("Succesfully found all Pinned Notes" , allTrashedNotes);
 		
 		return allTrashedNotesResponse;
+	}
+
+	@Override
+	public ResponseDTO addCollaborator(String emailId , long noteId) throws FundooNotesException {
+		
+		
+		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
+		
+		if (isNotePresent.isPresent()) {
+
+			FundooNoteCollaborator collaborator = new FundooNoteCollaborator();
+			
+			collaborator.setEmailAddress(emailId);
+			
+			fundooCollabRepository.save(collaborator);
+			
+			Optional<FundooNoteCollaborator> isCollaboratorPresent = fundooCollabRepository.findByEmailAddress(emailId);
+			
+			isCollaboratorPresent.get().addCollaboartorToTheNote(isNotePresent.get());
+			
+			fundooCollabRepository.save(isCollaboratorPresent.get());
+			
+			isNotePresent.get().getCollaborators().add(isCollaboratorPresent.get());
+			
+			fundooNotesRespository.save(isNotePresent.get());
+			
+			ResponseDTO addCollaboratorResponse = new ResponseDTO("added Collab ","done");
+			
+			return addCollaboratorResponse;
+		}else {
+			throw new FundooNotesException(601 , "Note not found");
+		}
+		
+		
+		}
+
+	@Override
+	public ResponseDTO removeCollaborator(String emailId , long noteId) throws FundooNotesException {
+		
+		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
+		
+		Optional<FundooNoteCollaborator> isCollaboratorPresent = fundooCollabRepository.findByEmailAddress(emailId);
+		
+		if (isNotePresent.isPresent()) {
+			if (isCollaboratorPresent.isEmpty()) {
+
+				isCollaboratorPresent.get().getNotes().remove(isNotePresent.get());
+				
+				fundooCollabRepository.save(isCollaboratorPresent.get());
+				
+				isNotePresent.get().getCollaborators().remove(isCollaboratorPresent.get());
+				
+				fundooNotesRespository.save(isNotePresent.get());
+				
+				ResponseDTO removeCollaboratorResponse = new ResponseDTO("removed Collab ","done");
+				
+				return removeCollaboratorResponse;
+			}else {
+				throw new FundooNotesException(601 , "Collaborator already exists");
+			}
+		}else {
+			throw new FundooNotesException(601 , "Note not found");
+		}
+		
+	}
+
+	@Override
+	public ResponseDTO viewAllCollaborators(long noteId) {
+		
+		List<Object> allCollaboraatorsList = fundooNotesRespository.findAllCollaboratorsById(noteId);
+		
+		allCollaboraatorsList.forEach(v -> mapper.map(v , FundooNoteCollaborator.class));
+	
+		ResponseDTO viewAllCollaboratorResponse = new ResponseDTO("Succesful" , allCollaboraatorsList);
+		
+		return viewAllCollaboratorResponse;
+		
 	}
 
 	

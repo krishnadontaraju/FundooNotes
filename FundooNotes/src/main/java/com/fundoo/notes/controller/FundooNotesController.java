@@ -103,4 +103,31 @@ public class FundooNotesController {
 		
 	}
 	
+	@PutMapping("/addCollaborator/{emailId}/noteId/{noteId}")
+	public ResponseEntity<ResponseDTO> addCollaboratorToTheNote(@PathVariable String emailId ,@PathVariable long noteId) throws FundooNotesException{
+		
+		ResponseDTO addCollaboratorResponse = fundooNotesService.addCollaborator(emailId ,noteId);
+		
+		return new ResponseEntity<ResponseDTO> (addCollaboratorResponse ,HttpStatus.ACCEPTED);
+		
+	}
+	
+	@PutMapping("/removeCollaborator/{emailId}/noteId/{noteId}")
+	public ResponseEntity<ResponseDTO> removeCollaboratorFromTheNote(@PathVariable String emailId , @PathVariable long noteId) throws FundooNotesException{
+		
+		ResponseDTO removeCollaboratorResponse = fundooNotesService.removeCollaborator(emailId , noteId);
+		
+		return new ResponseEntity<ResponseDTO> (removeCollaboratorResponse ,HttpStatus.ACCEPTED);
+		
+	}
+	
+	@GetMapping("/viewCollaborators/{noteId}")
+	public ResponseEntity<ResponseDTO> viewAllCollaaaborators(@PathVariable long noteId){
+		
+		ResponseDTO viewAllCollaboratorsResponse = fundooNotesService.viewAllCollaborators(noteId);
+		
+		return new ResponseEntity<ResponseDTO> (viewAllCollaboratorsResponse , HttpStatus.FOUND);
+		
+	}
+	
 }
