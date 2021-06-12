@@ -5,6 +5,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -33,4 +34,8 @@ public class FundooNotesConfiguration {
                 .build();
     }
 	
+	@Bean
+	public RestTemplate restTemplate() {
+	    return new RestTemplate();
+	}
 }

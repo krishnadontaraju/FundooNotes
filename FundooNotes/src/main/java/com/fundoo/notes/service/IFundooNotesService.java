@@ -6,28 +6,28 @@ import com.fundoo.notes.response.ResponseDTO;
 
 public interface IFundooNotesService {
 
-	ResponseDTO addNote(FundooNoteDTO fundooNoteDTO);
+	ResponseDTO addNote(FundooNoteDTO fundooNoteDTO, String token) throws FundooNotesException;
 
-	ResponseDTO viewAllNotes();
+	ResponseDTO viewAllNotes(String token) throws FundooNotesException;
 
-	ResponseDTO changeNote(long noteId, FundooNoteDTO fundooNoteDTO) throws FundooNotesException;
+	ResponseDTO changeNote(long noteId, FundooNoteDTO fundooNoteDTO, String token) throws FundooNotesException;
 
-	ResponseDTO moveNoteToTrash(long noteId) throws FundooNotesException;
+	ResponseDTO moveNoteToTrash(long noteId, String token) throws FundooNotesException;
 
-	ResponseDTO archiveNote(long noteId) throws FundooNotesException;
+	ResponseDTO archiveNote(long noteId, String token) throws FundooNotesException;
 
-	ResponseDTO pinNote(long noteId) throws FundooNotesException;
+	ResponseDTO pinNote(long noteId, String token) throws FundooNotesException;
 
-	ResponseDTO viewAllpinnedNotes();
+	ResponseDTO viewAllpinnedNotes(String token) throws FundooNotesException;
 
-	ResponseDTO viewAllArchivedNotes();
+	ResponseDTO viewAllArchivedNotes(String token) throws FundooNotesException;
 
-	ResponseDTO viewAllTrashedNotes();
+	ResponseDTO viewAllTrashedNotes(String token) throws FundooNotesException;
 
-	ResponseDTO addCollaborator(String emailId, long noteId) throws FundooNotesException;
+	ResponseDTO addCollaborator(String emailId, long noteId, String token) throws FundooNotesException;
 
-	ResponseDTO removeCollaborator(String emailId, long noteId) throws FundooNotesException;
+	ResponseDTO removeCollaborator(String emailId, long noteId, String token) throws FundooNotesException;
 
-	ResponseDTO viewAllCollaborators(long noteId);
+	ResponseDTO viewAllCollaborators(long noteId, String token) throws FundooNotesException;
 
 }

@@ -6,14 +6,16 @@ import com.fundoo.notes.response.ResponseDTO;
 
 public interface IFundooLabelService {
 
-	ResponseDTO viewAllLabels();
+	ResponseDTO viewAllLabels(String token) throws FundooNotesException;
 
-	ResponseDTO createLabel(FundooLabelDTO userDTO);
+	ResponseDTO createLabel(FundooLabelDTO userDTO, String token) throws FundooNotesException;
 
-	ResponseDTO deleteLabel(long userID) throws FundooNotesException;
+	ResponseDTO deleteLabel(long userID, String token) throws FundooNotesException;
 
-	ResponseDTO updateLabel(long token, FundooLabelDTO fundooLabelDTO) throws FundooNotesException;
+	ResponseDTO labelTheNote(long labelId, long noteId, String token) throws FundooNotesException;
 
-	ResponseDTO labelTheNote(long labelId, long noteId);
+	ResponseDTO updateLabel(long labelId, FundooLabelDTO fundooLabelDTO ,String token) throws FundooNotesException;
+
+	ResponseDTO removeLabelFromTheNote(long labelId, long noteId, String token) throws FundooNotesException;
 
 }
