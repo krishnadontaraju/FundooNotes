@@ -45,7 +45,7 @@ public class FundooNotesService implements IFundooNotesService{
 		
 		long userId = tokenManager.decodeToken(token);
 		
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			log.info("Requested Note Addition");
@@ -70,7 +70,7 @@ public class FundooNotesService implements IFundooNotesService{
 		log.info("Requested to view all notes");
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			log.info("User found retrieving all notes"+fundooNotesRespository.findAll());
@@ -88,7 +88,7 @@ public class FundooNotesService implements IFundooNotesService{
 		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			log.info("User found ,Checking for Note's presence");
@@ -118,7 +118,7 @@ public class FundooNotesService implements IFundooNotesService{
 		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			log.info("User found ,Checking for Note's presence");
@@ -147,7 +147,7 @@ public class FundooNotesService implements IFundooNotesService{
 		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			log.info("User found ,Checking for Note's presence");
@@ -179,7 +179,7 @@ public class FundooNotesService implements IFundooNotesService{
 		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			log.info("User found ,Checking for Note's presence");
@@ -205,7 +205,7 @@ public class FundooNotesService implements IFundooNotesService{
 		log.info("Requested to view all pinned notes");
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			log.info("User found , Retrieving all Pinned Notes");
@@ -226,7 +226,7 @@ public class FundooNotesService implements IFundooNotesService{
 		log.info("Requested to view all pinned notes");
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			List<FundooNotesModel> allArchivedNotes = fundooNotesRespository.findByIsArchived();		
@@ -245,7 +245,7 @@ public class FundooNotesService implements IFundooNotesService{
 		log.info("Requested to view all pinned notes");
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			List<FundooNotesModel> allTrashedNotes = fundooNotesRespository.findByIsTrashed();		
@@ -266,9 +266,9 @@ public class FundooNotesService implements IFundooNotesService{
 		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
-		boolean isCollaboratorEmailPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkEmailId/"+emailId , boolean.class);
+		boolean isCollaboratorEmailPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkEmailId/"+emailId , boolean.class);
 		if (isUserPresent == true) {
 			if (isCollaboratorEmailPresent == true) {
 				if (isNotePresent.isPresent()) {
@@ -307,7 +307,7 @@ public class FundooNotesService implements IFundooNotesService{
 		log.info("Requested for Collaborator removal");
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		Optional<FundooNotesModel> isNotePresent = fundooNotesRespository.findById(noteId);
 		Optional<FundooNoteCollaborator> isCollaboratorPresent = fundooCollabRepository.findByEmailAddress(emailId);
@@ -351,7 +351,7 @@ public class FundooNotesService implements IFundooNotesService{
 		log.info("Requested to view All Collaborators");
 		
 		long userId = tokenManager.decodeToken(token);
-		boolean isUserPresent = restTemplate.getForObject("http://localhost:8080/fundoo/users/checkUser/"+userId , boolean.class);
+		boolean isUserPresent = restTemplate.getForObject("http://fundoo-user/fundoo/users/checkUser/"+userId , boolean.class);
 		
 		if (isUserPresent == true) {
 			
