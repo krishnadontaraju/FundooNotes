@@ -1,5 +1,7 @@
 package com.fundoo.notes.exception;
 
+import lombok.Data;
+
 @SuppressWarnings("serial")
 public class FundooNotesException extends Exception {
 

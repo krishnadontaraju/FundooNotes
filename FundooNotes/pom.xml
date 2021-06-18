@@ -102,6 +102,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>fundoo-notes</finalName>
 	</build>
 
 </project>
